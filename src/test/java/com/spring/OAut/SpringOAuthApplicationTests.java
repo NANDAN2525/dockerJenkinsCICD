@@ -14,11 +14,11 @@ public class SpringOAuthApplicationTests {
 	
 
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
 		assertEquals(app.sonartest(), "Hi in sonar");
 	}
 	@Test
-	void sample() {
+	public void sample() {
 		assertEquals("Hi in sonar", "Hi in sonar");
 	}
 }
