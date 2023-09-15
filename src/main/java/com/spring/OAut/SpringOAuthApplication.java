@@ -28,6 +28,12 @@ public class SpringOAuthApplication {
 		System.out.println("in the greetings");
 		return "Hi in demo " +p.getName();		
 	}
+	
+	@GetMapping("/sonar")
+	public String sonartest( ) {
+		System.out.println("in the greetings");
+		return "Hi in sonar"	;	
+	}
 	public static void main(String[] args) {
 		SpringApplication.run(SpringOAuthApplication.class, args);
 	}
