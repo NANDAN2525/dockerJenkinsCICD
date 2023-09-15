@@ -26,7 +26,7 @@ public class SpringOAuthApplication {
 	public String gregs( Principal p) {
 //		return "HI hello mr/mrs" +p.getName();	
 		System.out.println("in the greetings");
-		return "Hi in demo " +p.getName();	
+		return "Hi in demo " +p.getName();		
 	}
 	public static void main(String[] args) {
 		SpringApplication.run(SpringOAuthApplication.class, args);
