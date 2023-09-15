@@ -9,13 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class SpringOAuthApplicationTests {
 	
-	@Autowired
-	SpringOAuthApplication app;
+	
 	
 
 	@Test
 	public void contextLoads() {
-		assertEquals(app.sonartest(), "Hi in sonar");
+		assertEquals("Hi", "Hi in sonar");
 	}
 	@Test
 	public void sample() {

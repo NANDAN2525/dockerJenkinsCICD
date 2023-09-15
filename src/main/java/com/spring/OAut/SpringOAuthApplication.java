@@ -16,7 +16,6 @@ public class SpringOAuthApplication {
 	
 	@GetMapping("/")
 	public String greeetings( Principal p) {
-//		return "HI hello mr/mrs" +p.getName();	
 		System.out.println("in the greetings");
 		return "Hi 😀😀😀 Welcome " +p.getName();	
 	}
@@ -34,6 +33,8 @@ public class SpringOAuthApplication {
 		System.out.println("in the greetings");
 		return "Hi in sonar"	;	
 	}
+	
+	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringOAuthApplication.class, args);
 	}
