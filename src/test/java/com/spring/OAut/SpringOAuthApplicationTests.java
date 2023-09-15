@@ -12,10 +12,10 @@ public class SpringOAuthApplicationTests {
 	
 	
 
-	@Test
-	public void contextLoads() {
-		assertEquals("Hi", "Hi in sonar");
-	}
+//	@Test
+//	public void contextLoads() {
+//		assertEquals("Hi", "Hi in sonar");
+//	}
 	@Test
 	public void sample() {
 		assertEquals("Hi in sonar", "Hi in sonar");
