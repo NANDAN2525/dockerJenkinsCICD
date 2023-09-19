@@ -12,4 +12,9 @@ public class SpringOAuthApplicationTests {
 	public void sample() {
 		assertEquals("Hi in sonar", "Hi in sonar");
 	}
+	
+	@Test
+	public void sample80() {
+		assertEquals("Hi in sona", "Hi in sonar");
+	}
 }
