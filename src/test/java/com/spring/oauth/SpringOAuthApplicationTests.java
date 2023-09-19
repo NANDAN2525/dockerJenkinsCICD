@@ -19,6 +19,6 @@ public class SpringOAuthApplicationTests {
     }
     
     public SpringOAuthApplicationTests() {
-        // Constructor logic (if any)
+      
     }
 }
