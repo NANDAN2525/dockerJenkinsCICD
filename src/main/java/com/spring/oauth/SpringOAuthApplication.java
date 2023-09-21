@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 @SpringBootApplication
 @RestController
-@EnableOAuth2Sso
+//@EnableOAuth2Sso
 public class SpringOAuthApplication {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SpringOAuthApplication.class);
