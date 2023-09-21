@@ -15,7 +15,7 @@ public class SpringOAuthApplicationTests {
 
     @Test
     public void sample80() {
-        assertEquals("Hi in sonar", "Hi in sona");
+        assertEquals("Hi in sonar", "Hi in sonar");
     }
     
     public SpringOAuthApplicationTests() {
