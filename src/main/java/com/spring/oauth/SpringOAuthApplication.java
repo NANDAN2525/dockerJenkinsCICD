@@ -18,22 +18,22 @@ public class SpringOAuthApplication {
 
 	@GetMapping("/")
 	public String greeetings( ) {
-		 logger.info("In the greetings");
-		    return "Hi 😀😀😀 Welcome ";
+		 logger.info("In the greetings module");
+		    return "Hi 😀😀😀 Welcome module";
 		
 	}
 	
 	
 	@GetMapping("/demo")
 	public String gregs() {
-		 logger.info("In the demo");
-		return "Hi in demo 😀😀";		
+		 logger.info("In the demo module");
+		return "Hi in demo  module 😀😀";		
 	}
 		
 	@GetMapping("/sonar")
 	public String sonartest( ) {
-		 logger.info("In the sonar");
-		return "Hi in sonar 😀"	;	
+		 logger.info("In the sonar module");
+		return "Hi in sonar module 😀"	;	
 	}
 	
 	
