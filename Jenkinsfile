@@ -16,30 +16,29 @@ pipeline {
         WORKSPACE_DIR = "${JENKINS_HOME}/workspace/${JOB_NAME}"
     }
 
-    parameters {
-       choice(
+   parameters {
+    choice(
         choices: ["Baseline", "Full"],
+        name: 'SCAN_TYPE', // Corrected parameter name
         description: 'Type of scan to perform inside the container',
-        name: 'SCAN_TYPE',
         defaultValue: 'Baseline' // Default value is set to "Baseline"
     )
-        string(
-            defaultValue: "http://127.0.0.1:1119/",
-            description: 'Target URL to scan',
-            name: 'TARGET'
-        )
-        string(
-            defaultValue: "http://127.0.0.1:9000/",
-            description: 'Sonar host URL',
-            name: 'SONARURL'
-        )
-        booleanParam(
-            defaultValue: true,
-            description: 'Generate report',
-            name: 'GENERATE_REPORT'
-        )
-    }
-
+    string(
+        defaultValue: "http://127.0.0.1:1119/",
+        description: 'Target URL to scan',
+        name: 'TARGET'
+    )
+    string(
+        defaultValue: "http://127.0.0.1:9000/",
+        description: 'Sonar host URL',
+        name: 'SONARURL'
+    )
+    booleanParam(
+        defaultValue: true,
+        description: 'Generate report',
+        name: 'GENERATE_REPORT'
+    )
+}
     stages {
         stage('checkout') {
             steps {
