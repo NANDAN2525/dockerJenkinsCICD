@@ -36,6 +36,11 @@ public class SpringOAuthApplication {
 		return "Hi in sonar module 😀"	;	
 	}
 	
+	@GetMapping("/check")
+	public String check( ) {
+		 logger.info("In the check module");
+		return "Hi in check module 😀😀😀😀😀😀😀"	;	
+	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringOAuthApplication.class, args);
