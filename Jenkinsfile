@@ -18,10 +18,10 @@ pipeline {
 
    parameters {
     choice(
-        choices: ["Baseline", "Full"],
+        // choices: ["Baseline", "Full"],
+        choices: ["Baseline"],
         name: 'SCAN_TYPE', // Corrected parameter name
-        description: 'Type of scan to perform inside the container',
-        defaultValue: 'Baseline' // Default value is set to "Baseline"
+        description: 'Type of scan to perform inside the container'
     )
     string(
         defaultValue: "http://127.0.0.1:1119/",
