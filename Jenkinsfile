@@ -120,6 +120,41 @@ stage("Trivy Scan") {
                         mkdir /zap/wrk
                     """
                     echo "----> Scan type: ${params.SCAN_TYPE}"
+					 stage('Scanning target on OWASP container') {
+       
+                    scan_type = "${params.SCAN_TYPE}"
+                    echo "----> Scan type: $scan_type"
+                    target = "${params.TARGET}"
+                    if (scan_type == "Baseline") {
+                        bat """
+                            docker exec owasp \
+                            zap-baseline.py \
+                            -t $target \
+                            -r report.html \
+                            -I
+                        """
+                    } else if (scan_type == "APIS") {
+                        bat """
+                            docker exec owasp \
+                            zap-api-scan.py \
+                            -t $target \
+                            -x report.xml \
+                            -I
+                        """
+                    } else if (scan_type == "Full") {
+                        bat """
+                            docker exec owasp \
+                            zap-full-scan.py \
+                            -t $target \
+                            -I
+                        """
+                        // -x report-$(date +%d-%b-%Y).xml
+                    } else {
+                        echo "Something went wrong..."
+                    }
+                }
+        
+					
                     echo "copying the workspace"
                     bat """
                         docker cp owasp:/zap/wrk/ ${WORKSPACE_DIR}
