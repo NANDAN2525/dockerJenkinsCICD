@@ -63,8 +63,14 @@ pipeline {
                 bat "mvn clean install"
             }
         }
-
-        stage("Trivy Scan") {
+        stage('Docker Image Build') {
+            steps {
+                script {
+                    bat "docker build -t ${dockerImageName} ."
+                }
+            }
+        }
+stage("Trivy Scan") {
         steps {
         script {
             def reportDirectory = "${WORKSPACE_DIR}/trivy"
@@ -122,13 +128,6 @@ pipeline {
             }
         }
 
-        stage('Docker Image') {
-            steps {
-                script {
-                    bat "docker build -t ${dockerImageName} ."
-                }
-            }
-        }
 
         stage('Docker Image push to hub') {
             steps {
