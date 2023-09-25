@@ -14,6 +14,11 @@ pipeline {
     environment {
         DOCKER_LOGIN = credentials('dockerloginpwd')
         WORKSPACE_DIR = "${JENKINS_HOME}/workspace/${JOB_NAME}"
+        DC_VERSION = 'latest'
+        DC_DIRECTORY = "${env.WORKSPACE_DIR}/OWASP-Dependency-Check"
+        DC_PROJECT = "dependency-check scan: ${env.WORKSPACE_DIR}"
+        DATA_DIRECTORY = "${DC_DIRECTORY}/data"
+        CACHE_DIRECTORY = "${DATA_DIRECTORY}/cache"
     }
 
    parameters {
@@ -60,14 +65,23 @@ pipeline {
         }
   stage('OWASP Dependency-Check Vulnerabilities') {
       steps {
-        dependencyCheck additionalArguments: ''' 
-                    -o './'
-                    -s './'
-                    -f 'ALL' 
-                    --prettyPrint''', odcInstallation: 'owaspdependencycheck'
-        
-        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-      }
+                script {
+                    // Pull the latest version of OWASP Dependency-Check Docker image
+                    bat "docker pull owasp/dependency-check:${DC_VERSION}"
+
+                    // Run Dependency-Check inside a Docker container
+                    bat """docker run --rm ^
+                        --volume ${env.WORKSPACE}:/src ^
+                        --volume ${DATA_DIRECTORY}:/usr/share/dependency-check/data ^
+                        --volume ${env.WORKSPACE}/odc-reports:/report ^
+                        owasp/dependency-check:${DC_VERSION} ^
+                        --scan /src ^
+                        --format "ALL" ^
+                        --project "${DC_PROJECT}" ^
+                        --out /report
+                    """
+                }
+            }
     }
 
         stage('Mvn Build') {
@@ -213,7 +227,7 @@ stage("Trivy Scan") {
                 Attached the OWASP ZAP scan reports:""",
                 to: "${emailRecipient}",
                 replyTo: "${emailRecipient}",
-                attachmentsPattern: '**/report.html,**/trivy_report.json',
+                attachmentsPattern: '**/report.html,**/trivy_report.json,**/dependency-check-jenkins.html,**/dependency-check-report.html,**/publishedSuppressions.xml',
                 attachLog: true
             )
         }
