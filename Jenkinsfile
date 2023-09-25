@@ -50,6 +50,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv(credentialsId: sonarCredentials) {
+			bat "mvn clean package"
                         bat """
                             mvn sonar:sonar -Dsonar.host.url=${params.SONARURL} -Dsonar.token=\${env.${sonarCredentials}} -Dsonar.java.binaries=.
                         """
