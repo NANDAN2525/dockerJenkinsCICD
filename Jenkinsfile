@@ -193,7 +193,6 @@ stage("Trivy Scan") {
                 Error Details: ${currentBuild.rawBuild.getLog(1000)}""",
                 to: "${emailRecipient}",
                 replyTo: "${emailRecipient}",
-                attachmentsPattern: '**/report.html,**/trivy_report.json',
                 attachLog: true
             )
         }
