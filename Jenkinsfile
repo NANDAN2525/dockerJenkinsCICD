@@ -58,6 +58,17 @@ pipeline {
                 }
             }
         }
+     stage('OWASP Dependency-Check Vulnerabilities') {
+      steps {
+        owaspdependencycheck additionalArguments: ''' 
+                    -o './'
+                    -s './'
+                    -f 'ALL' 
+                    --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+        
+        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+      }
+    }
 
         stage('Mvn Build') {
             steps {
