@@ -177,13 +177,6 @@ stage("Trivy Scan") {
     }
 
     post {
-        always {
-            echo "Removing container"
-            bat '''
-                docker stop owasp
-                docker rm owasp
-            '''
-        }
         failure {
             echo "Pipeline failed! Sending email notification..."
             emailext(
@@ -197,6 +190,11 @@ stage("Trivy Scan") {
             )
         }
         success {
+		echo "Removing container"
+            	bat '''
+                docker stop owasp
+                docker rm owasp
+            	'''
             emailext(
                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                 body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has succeeded.
