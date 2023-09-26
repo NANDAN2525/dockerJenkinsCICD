@@ -232,10 +232,6 @@ publishHTML([
     reportName: "OWASP ZAP Report",
     reportTitles: ""
 ])
-
-plot([
-    [dataset: [file: "trivy/trivy_report.json", label: 'Trivy', style: 'line']]
-])
 publishHTML([
     allowMissing: false,
     alwaysLinkToLastBuild: false,
