@@ -81,6 +81,7 @@ pipeline {
                         --project "${DC_PROJECT}" ^
                         --out /report
                     """
+		  archiveArtifacts artifacts: "odc-reports/*.html", allowEmptyArchive: true
                 }
             }
     }
