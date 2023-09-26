@@ -258,8 +258,7 @@ plot([ [series: [[file: "target/surefire-reports/**/*.xml", parser: 'JUnit', lab
                     group: 'Test Cases',
                     style: 'line'
                     ]]
-            emailext(
-                subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
+emailext(subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                 body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has succeeded.
                 Pipeline URL: ${env.BUILD_URL}
                 Attached the OWASP ZAP scan reports:""",
