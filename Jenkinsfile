@@ -249,14 +249,17 @@ pipeline {
                 reportName: 'OWASP Dependency Check Report',
                 reportTitles: ''
             ])
-            plot(
-    title: 'Test Case Trend',
-    xaxis: 'Build Number',
-    yaxis: 'Test Cases Count',
-    group: 'Test Cases',
-    style: 'line',
-    series: [[file: "target/surefire-reports/**/*.xml", parser: 'JUnit', label: 'Test Cases']]
-)
+
+            jacoco(execPattern: 'target/**/*.exec')
+            publishHTML(
+            target: [
+        allowMissing: false,
+        alwaysLinkToLastBuild: true,
+        keepAll: true,
+        reportDir: 'target/site/jacoco',
+        reportFiles: 'index.html',
+        reportName: 'JaCoCo Code Coverage'
+    ])
             emailext(
                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                 body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has succeeded.
