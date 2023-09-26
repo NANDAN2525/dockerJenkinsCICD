@@ -222,6 +222,12 @@ stage("Trivy Scan") {
                 docker stop owasp
                 docker rm owasp
             	'''
+	    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: "odc-reports/dependency-check-report.html", reportFiles: 'dependency-check-report.html', reportName: 'OWASP Dependency Check Report', reportTitles: ''])
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: "odc-reports/dependency-check-jenkins.html", reportFiles: 'dependency-check-jenkins.html', reportName: 'OWASP Dependency jenkins.html', reportTitles: ''])
+            plot([
+                [dataset: [file: "trivy/trivy_report.json", label: 'Trivy', style: 'line']],
+            ])
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: "wrk/report.html', reportFiles: '*.html', reportName: 'OWASP ZAP Report', reportTitles: ''])
             emailext(
                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                 body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has succeeded.
