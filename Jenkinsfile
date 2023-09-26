@@ -223,14 +223,6 @@ stage("Trivy Scan") {
                 docker stop owasp
                 docker rm owasp
             	'''
- plot([ [series: [[file: "target/surefire-reports/**/*.xml", parser: 'JUnit', label: 'Test Cases'],
-                    ],
-                    title: 'Test Case Trend',
-                    xaxis: 'Build Number',
-                    yaxis: 'Test Cases Count',
-                    group: 'Test Cases',
-                    style: 'line'
-                    ]]
 publishHTML([
     allowMissing: false,
     alwaysLinkToLastBuild: false,
@@ -258,6 +250,14 @@ publishHTML([
     reportName: 'OWASP Dependency Check Report',
     reportTitles: ''
 ])
+plot([ [series: [[file: "target/surefire-reports/**/*.xml", parser: 'JUnit', label: 'Test Cases'],
+                    ],
+                    title: 'Test Case Trend',
+                    xaxis: 'Build Number',
+                    yaxis: 'Test Cases Count',
+                    group: 'Test Cases',
+                    style: 'line'
+                    ]]
             emailext(
                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                 body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has succeeded.
