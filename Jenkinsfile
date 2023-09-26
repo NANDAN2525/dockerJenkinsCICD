@@ -187,7 +187,7 @@ stage("Trivy Scan") {
                     bat """
                         docker cp owasp:/zap/wrk/ ${WORKSPACE_DIR}
                     """
-		archiveArtifacts artifacts: "$wrk/*.html", allowEmptyArchive: true
+		archiveArtifacts artifacts: "wrk/*.html", allowEmptyArchive: true
                 }
             }
         }
