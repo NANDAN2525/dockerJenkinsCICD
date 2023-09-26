@@ -229,7 +229,7 @@ stage("Trivy Scan") {
                     xaxis: 'Build Number',
                     yaxis: 'Test Cases Count',
                     group: 'Test Cases',
-                    style: 'line',
+                    style: 'line'
                     ]]
 publishHTML([
     allowMissing: false,
