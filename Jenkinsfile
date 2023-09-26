@@ -223,15 +223,16 @@ stage("Trivy Scan") {
                 docker stop owasp
                 docker rm owasp
             	'''
-	   publishHTML([
+publishHTML([
     allowMissing: false,
     alwaysLinkToLastBuild: false,
     keepAll: true,
-    reportDir: "wrk/report.html",
-    reportFiles: '*.html',
-    reportName: 'OWASP ZAP Report',
-    reportTitles: ''
+    reportDir: "wrk", 
+    reportFiles: "report.html",
+    reportName: "OWASP ZAP Report",
+    reportTitles: ""
 ])
+
 plot([
     [dataset: [file: "trivy/trivy_report.json", label: 'Trivy', style: 'line']]
 ])
