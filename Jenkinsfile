@@ -59,7 +59,7 @@ pipeline {
                         bat """
                             mvn sonar:sonar -Dsonar.host.url=${params.SONARURL} -Dsonar.token=\${env.${sonarCredentials}} -Dsonar.java.binaries=.
                         """
-			archiveArtifacts artifacts: "${WORKSPACE_DIR}/target/surefire-reports/**/*.xml", allowEmptyArchive: true
+			archiveArtifacts artifacts: "target/surefire-reports/**/*.xml", allowEmptyArchive: true
                     }
                 }
             }
@@ -109,7 +109,7 @@ stage("Trivy Scan") {
                 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "${reportDirectory}":/workspace aquasec/trivy image ${dockerImageName} --no-progress --scanners vuln --exit-code 0 --severity HIGH,CRITICAL --format json --output /workspace/trivy_report.json
             """
             // Archive the Trivy HTML report as a build artifact
-           archiveArtifacts artifacts: "${WORKSPACE_DIR}/trivy/*.json", allowEmptyArchive: true
+           archiveArtifacts artifacts: "trivy/*.json", allowEmptyArchive: true
         }
     }
 }
@@ -186,7 +186,7 @@ stage("Trivy Scan") {
                     bat """
                         docker cp owasp:/zap/wrk/ ${WORKSPACE_DIR}
                     """
-		archiveArtifacts artifacts: "${WORKSPACE_DIR}/wrk/*.html", allowEmptyArchive: true
+		archiveArtifacts artifacts: "$wrk/*.html", allowEmptyArchive: true
                 }
             }
         }
