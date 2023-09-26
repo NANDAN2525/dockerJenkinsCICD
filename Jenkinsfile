@@ -249,14 +249,14 @@ pipeline {
                 reportName: 'OWASP Dependency Check Report',
                 reportTitles: ''
             ])
-            plot([ [series: [[file: "target/surefire-reports/**/*.xml", parser: 'JUnit', label: 'Test Cases'],
-                        ],
-                        title: 'Test Case Trend',
-                        xaxis: 'Build Number',
-                        yaxis: 'Test Cases Count',
-                        group: 'Test Cases',
-                        style: 'line'
-                        ]])
+            plot(
+    title: 'Test Case Trend',
+    xaxis: 'Build Number',
+    yaxis: 'Test Cases Count',
+    group: 'Test Cases',
+    style: 'line',
+    series: [[file: "target/surefire-reports/**/*.xml", parser: 'JUnit', label: 'Test Cases']]
+)
             emailext(
                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                 body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has succeeded.
