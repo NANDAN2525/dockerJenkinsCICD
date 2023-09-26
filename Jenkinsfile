@@ -236,7 +236,7 @@ publishHTML([
     allowMissing: false,
     alwaysLinkToLastBuild: false,
     keepAll: true,
-    reportDir: "odc-reports/dependency-check-jenkins.html",
+    reportDir: "odc-reports",
     reportFiles: 'dependency-check-jenkins.html',
     reportName: 'OWASP Dependency jenkins.html',
     reportTitles: ''
@@ -245,7 +245,7 @@ publishHTML([
     allowMissing: false,
     alwaysLinkToLastBuild: false,
     keepAll: true,
-    reportDir: "odc-reports/dependency-check-report.html",
+    reportDir: "odc-reports",
     reportFiles: 'dependency-check-report.html',
     reportName: 'OWASP Dependency Check Report',
     reportTitles: ''
