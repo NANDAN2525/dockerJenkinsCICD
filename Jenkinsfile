@@ -227,7 +227,7 @@ stage("Trivy Scan") {
             plot([
                 [dataset: [file: "trivy/trivy_report.json", label: 'Trivy', style: 'line']],
             ])
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: "wrk/report.html', reportFiles: '*.html', reportName: 'OWASP ZAP Report', reportTitles: ''])
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: "wrk/report.html", reportFiles: '*.html', reportName: 'OWASP ZAP Report', reportTitles: ''])
             emailext(
                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                 body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has succeeded.
