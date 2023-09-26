@@ -260,6 +260,7 @@ pipeline {
         reportFiles: 'index.html',
         reportName: 'JaCoCo Code Coverage'
     ])
+    junit '**/target/surefire-reports/*.xml'
             emailext(
                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                 body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has succeeded.
