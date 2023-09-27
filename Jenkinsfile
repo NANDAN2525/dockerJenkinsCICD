@@ -82,7 +82,8 @@ pipeline {
                         --project "${DC_PROJECT}" ^
                         --out /report
                     """
-                    archiveArtifacts artifacts: "odc-reports/*.html", allowEmptyArchive: true
+                   archiveArtifacts artifacts: "odc-reports/*.html", allowEmptyArchive: true
+                    archiveArtifacts artifacts: "**/dependency-check-report.xml", allowEmptyArchive: true
                 }
             }
         }
@@ -261,6 +262,13 @@ pipeline {
         reportName: 'JaCoCo Code Coverage'
     ])
     junit '**/target/surefire-reports/*.xml'
+ dependencyCheckPublisher(
+    pattern: '**/dependency-check-report.xml',
+    unstableTotalHigh: 5, // Set your thresholds for high severity vulnerabilities
+    unstableTotalLow: 10, // Set your thresholds for low severity vulnerabilities
+    failedTotalHigh: 10,  // Set your thresholds for high severity vulnerabilities
+    failedTotalLow: 20    // Set your thresholds for low severity vulnerabilities
+)
             emailext(
                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                 body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has succeeded.
