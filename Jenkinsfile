@@ -78,12 +78,13 @@ pipeline {
                         --volume ${WORKSPACE_DIR}/odc-reports:/report ^
                         owasp/dependency-check:${DC_VERSION} ^
                         --scan /src ^
-                        --format "HTML" ^
+                        --format "ALL" ^
                         --project "${DC_PROJECT}" ^
                         --out /report
                     """
-                   archiveArtifacts artifacts: "odc-reports/*.html", allowEmptyArchive: true
-                    archiveArtifacts artifacts: "**/dependency-check-report.xml", allowEmptyArchive: true
+                     
+             archiveArtifacts artifacts: "odc-reports/*.html", allowEmptyArchive: true
+                    // archiveArtifacts artifacts: "**/dependency-check-report.xml", allowEmptyArchive: true
                 }
             }
         }
@@ -206,16 +207,21 @@ pipeline {
 
     post {
         failure {
-            echo "Pipeline failed! Sending email notification..."
-            emailext(
-                subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
-                body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has failed.
-                Pipeline URL: ${env.BUILD_URL}
-                Error Details: ${currentBuild.rawBuild.getLog(1000)}""",
-                to: "${emailRecipient}",
-                replyTo: "${emailRecipient}",
-                attachLog: true
-            )
+            script {
+                currentBuild.result = 'FAILURE'
+                echo "Pipeline failed! Sending email notification..."
+                emailext(
+                    subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
+                    body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has failed.
+                    Pipeline URL: ${env.BUILD_URL}
+                    Error Details: ${currentBuild.rawBuild.getLog(1000)}""",
+                    to: "${emailRecipient}",
+                    replyTo: "${emailRecipient}",
+                    attachLog: true,
+                    recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+                )
+                  echo "email failed text end"
+            }
         }
         success {
             echo "Removing container"
@@ -223,6 +229,16 @@ pipeline {
                 docker stop owasp
                 docker rm owasp
             '''
+            echo "dependencyCheckPublisher"
+            dependencyCheckPublisher(
+                pattern: '**/dependency-check-report.xml',
+                // unstableTotalHigh: 5, // Set your thresholds for high severity vulnerabilities
+                // unstableTotalLow: 10, // Set your thresholds for low severity vulnerabilities
+                // failedTotalHigh: 10,  // Set your thresholds for high severity vulnerabilities
+                // failedTotalLow: 20    // Set your thresholds for low severity vulnerabilities
+            )
+             echo "junit"
+            junit '**/target/surefire-reports/*.xml'
             publishHTML([
                 allowMissing: false,
                 alwaysLinkToLastBuild: false,
@@ -253,22 +269,16 @@ pipeline {
 
             jacoco(execPattern: 'target/**/*.exec')
             publishHTML(
-            target: [
-        allowMissing: false,
-        alwaysLinkToLastBuild: true,
-        keepAll: true,
-        reportDir: 'target/site/jacoco',
-        reportFiles: 'index.html',
-        reportName: 'JaCoCo Code Coverage'
-    ])
-    junit '**/target/surefire-reports/*.xml'
- dependencyCheckPublisher(
-    pattern: '**/dependency-check-report.xml',
-    unstableTotalHigh: 5, // Set your thresholds for high severity vulnerabilities
-    unstableTotalLow: 10, // Set your thresholds for low severity vulnerabilities
-    failedTotalHigh: 10,  // Set your thresholds for high severity vulnerabilities
-    failedTotalLow: 20    // Set your thresholds for low severity vulnerabilities
-)
+                target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'target/site/jacoco',
+                    reportFiles: 'index.html',
+                    reportName: 'JaCoCo Code Coverage'
+                ]
+            )
+             echo "email text start"
             emailext(
                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                 body: """The Jenkins pipeline ${currentBuild.fullDisplayName} has succeeded.
@@ -279,6 +289,7 @@ pipeline {
                 attachmentsPattern: '**/report.html,**/trivy_report.json,**/dependency-check-jenkins.html,**/dependency-check-report.html,**/publishedSuppressions.xml',
                 attachLog: true
             )
+            echo "email text end"
         }
     }
 }
